@@ -12,7 +12,7 @@ class PrivateData {
 
         // Fire notification
         for (let changeListener of this.changeListeners) {
-            changeListener(prevData, nextData, path);
+            changeListener(nextData, prevData, path);
         }
 
         this.currentData = nextData;
@@ -69,7 +69,7 @@ export default class RootCursor extends Cursor {
     }
 
     /*
-     * function changeListener(prevRoot, nextRoot, pathUpdated)
+     * function changeListener(nextRoot, prevRoot, pathUpdated)
      */
     onChange(changeListener) {
         privateDataMap.get(this).addListener(changeListener);

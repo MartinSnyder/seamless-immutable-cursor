@@ -6,7 +6,7 @@
   "author": "Martin Snyder",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MartinSnyder/webpack-hmr-demo.git"
+    "url": "https://github.com/MartinSnyder/seamless-immutable-cursor.git"
   },
   "license": "MIT",
   "scripts": {

@@ -39,7 +39,7 @@ describe('Cursors', () => {
     });
 
     let changes = [];
-    nested.onChange((prevRoot, nextRoot, pathUpdated) =>
+    nested.onChange((nextRoot, prevRoot, pathUpdated) =>
         changes.push({
             prevRoot: prevRoot,
             nextRoot: nextRoot,
