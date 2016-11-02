@@ -1,5 +1,5 @@
 # seamless-immutable-cursor
-Compact Cursor Library built on top of the excellent seamless-immutable
+Compact Cursor Library built on top of the excellent [seamless-immutable][seamless-immutable-github]
 
 # Example
 ```javascript
@@ -42,7 +42,13 @@ childCursor.data = 'Resume';
 // updatedFirstDocumentName will be 'Resume' because the cursor points
 // to the location, not the specific data
 const updatedFirstDocumentName = childCursor.data;
+
+// updatedFirstDocumentNameFromRoot will ALSO be 'Resume' because the
+// 'managed' data has moved to a new generation based on the prior update
+const updatedFirstDocumentNameFromRoot = rootCursor.data.documents[0].name;
 ```
 
 # React Demo
 The demo folder contains a simple demo that combines this library, seamless-immutable and React.
+
+[seamless-immutable-github]: https://github.com/rtfeldman/seamless-immutable
