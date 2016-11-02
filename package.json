@@ -1,0 +1,25 @@
+{
+  "name": "seamless-immutable-cursor",
+  "version": "0.1.0",
+  "description": "Cursor Library add-on for seamless-immutable",
+  "main": "src/index.js",
+  "author": "Martin Snyder",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MartinSnyder/webpack-hmr-demo.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "./node_modules/.bin/webpack-dev-server --hot --inline"
+  },
+  "dependencies": {
+    "seamless-immutable": "^6.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
