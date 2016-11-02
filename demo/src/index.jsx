@@ -26,20 +26,27 @@ import ReactDOM from 'react-dom';
 import Cursor from '../../src/index.js'
 import MessageList from './MessageList'
 
+// Create a root cursor
 const rootCursor = new Cursor({
     messages: ['Initialized']
 });
 
+// Register a change handler that renders our page using react. Our React components
+// will only 'see' regular JavaScript objects that are runtime-immutable. Any attempts
+// by a React component to modify its properties will result in a runtime exception.
 rootCursor.onChange((nextData) => {
     ReactDOM.render(<MessageList messages={nextData.messages} />,  document.getElementById('mountPoint'));
 });
 
 // TODO: Build your entire application around this concept!
 window.setInterval(() => {
+    // Every second, we apply a change to a refined cursor. This creates a new generation of our
+    // immutable data and triggers a render (via the onChange handler above)
     const messageCursor = rootCursor.refine('messages');
     const currentMessages = messageCursor.data;
     messageCursor.data = currentMessages.concat('Pulse: ' + (new Date().getTime() / 1000));
 }, 1000);
 
 // For debugging, so you can access the application state in the browser console
+// NOTE: you can do this even when the debugger is not stopped at a breakpoint
 window.rootCursor = rootCursor;
