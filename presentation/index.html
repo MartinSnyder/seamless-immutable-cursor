@@ -76,7 +76,9 @@
 					<h3>Immutable.js</h3>
 					<ul>
 						<li>Persistent data structures</li>
-						<li>Functional Programming Inspired</li>
+						<li>Low-cost writes</li>
+						<li>High-cost conversion to compatible structures</li>
+						<li>No downstream" immutability</li>
 					</ul>
 					<aside class="notes">
 					</aside>
@@ -86,7 +88,9 @@
 					<h3>Seamless-immutable / Deep-freeze</h3>
 					<ul>
 						<li>Uses ES5's Object.freeze() to lock-down existing structures</li>
-						<li>Interoperability inspired</li>
+						<li>High-cost writes</li>
+						<li>zero-cost conversion to compatible structures</li>
+						<li>"downstream" immutability</li>
 					</ul>
 					<aside class="notes">
 					</aside>
@@ -98,6 +102,7 @@
 						<li>Interop with ALL existing JavaScript libraries</li>
 						<li>Rewrites common routines to return only immutable values (e.g. map)</li>
 						<li>Special cases for objects that don't respond well to being Frozen</li>
+						<li>Release build addresses write performance</li>
 					</ul>
 					<aside class="notes">
 					</aside>
