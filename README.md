@@ -1,5 +1,10 @@
 # seamless-immutable-cursor
-Compact Cursor Library built on top of the excellent [seamless-immutable][seamless-immutable-github]
+Compact Cursor Library built on top of the excellent [seamless-immutable][seamless-immutable-github].
+Cursors can be used to manage transitions and manipulations of immutable structures in an application.
+
+## Presentation
+A 20 minute presentation explains the utility of this library and the repository contents. [Slides can be viewed here](https://rawgit.com/MartinSnyder/seamless-immutable-cursor/master/presentation/index.html)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wQy5vxzNdV0" frameborder="0" allowfullscreen></iframe>
 
 # Example
 ```javascript
