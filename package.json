@@ -1,6 +1,6 @@
 {
   "name": "seamless-immutable-cursor",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Cursor Library add-on for seamless-immutable",
   "main": "lib/index.js",
   "author": "Martin Snyder",
@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "seamless-immutable": "^6.3.0"
+    "seamless-immutable": "^7.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
