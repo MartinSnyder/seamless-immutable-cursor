@@ -47,9 +47,15 @@ class PrivateData {
         // this.currentData is about to become the "previous generation"
         const prevData = this.currentData;
 
-        // Apply the update to produce the next generation. Because this.currentData has
-        // been processed by seamless-immutable, nextData will automatically be immutable as well.
-        this.currentData = this.currentData.setIn(path, newValue);
+        if (path.length === 0) {
+            // Replace the data entirely. We must manually force its immutability when we do this.
+            this.currentData = Immutable(newValue);
+        }
+        else {
+            // Apply the update to produce the next generation. Because this.currentData has
+            // been processed by seamless-immutable, nextData will automatically be immutable as well.
+            this.currentData = this.currentData.setIn(path, newValue);
+        }
 
         // Notify all change listeners
         for (let changeListener of this.changeListeners) {

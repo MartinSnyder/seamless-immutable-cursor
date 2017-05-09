@@ -6,7 +6,6 @@ const assert = chai.assert;
 describe('Data object with primitive', () => {
     const cursor = new Cursor('primitive');
     it('constructs cleanly', () => assert.equal('primitive', cursor.data));
-    it('exposes root immutably', () => chai.expect(() => cursor.data = 'updated').to.throw());
 });
 
 describe('Data object with structure', () => {
@@ -14,8 +13,7 @@ describe('Data object with structure', () => {
         attr: 'structured'
     });
     it('constructs cleanly', () => assert.equal('structured', cursor.data.attr));
-    it('exposes root immutably', () => chai.expect(() => cursor.data = { attr: 'updated'}).to.throw());
-    it('exposes attribute immutably', () => chai.expect(() => cursor.data.attr = 'updated').to.throw());
+    it('exposes root attribute immutably', () => chai.expect(() => cursor.data.attr = 'updated').to.throw());
 });
 
 describe('Multiple Data classes', () => {
@@ -26,6 +24,26 @@ describe('Multiple Data classes', () => {
         assert.equal('one', one.data);
         assert.equal('two', two.data);
         assert.notEqual(one.data, two.data);
+    });
+});
+
+describe('Root Cursors', () => {
+    const root = new Cursor({
+        interior: null
+    });
+
+    it('Allows replacement of data', () => {
+        root.data = {
+            interior: 5
+        };
+    });
+
+    it('Replaces data with immutable objects', () => {
+        root.data = {
+            interior: 5
+        };
+
+        chai.expect(() => cursor.data.interior = 6).to.throw();
     });
 });
 
