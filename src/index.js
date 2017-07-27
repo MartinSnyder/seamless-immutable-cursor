@@ -24,6 +24,23 @@
 import Immutable from 'seamless-immutable';
 
 /*
+ * Custom getIn function
+ *
+ * Using custom getIn because Seamless Immutable's getIn function does not default to
+ * the original object when path is empty.
+ */
+function getIn(obj, path) {
+    let pointer = obj;
+    for (let el of path) {
+        pointer = pointer
+            ? pointer[el]
+            : undefined;
+    }
+
+    return pointer;
+}
+
+/*
  * Cursor data that is private to the class/module.
  *
  * Instances of this class manage MUTABLE data associated with a cursor. This includes:
@@ -59,8 +76,21 @@ class PrivateData {
 
         // Notify all change listeners
         for (let changeListener of this.changeListeners) {
-            // Pass nextData first because many listeners will ONLY care about that.
-            changeListener(this.currentData, prevData, path);
+            let shouldUpdate = true;
+            let shorterPathLength = Math.min(path.length, changeListener.path.length);
+
+            // Only update if the change listener path is a sub-path of the update path (or vice versa)
+            for(let i = 1; i < shorterPathLength; i++) {
+                shouldUpdate = shouldUpdate && (path[i] === changeListener.path[i])
+            }
+
+            if(shouldUpdate) {
+                // Only call change listener if associated path data has changed
+                if(getIn(this.currentData, changeListener.path) !== getIn(prevData, changeListener.path)) {
+                    // Pass nextData first because many listeners will ONLY care about that.
+                    changeListener(this.currentData, prevData, path);
+                }
+            }
         }
     }
 
@@ -131,16 +161,7 @@ class Cursor {
      * does not exist in the current generation of the managed data.
      */
     get data() {
-        // I didn't see a 'getIn' method in seamless-immutable that was publicly accessible
-        // So I rolled my own
-        let pointer = privateDataMap.get(this).currentData;
-        for (let el of this.path) {
-            pointer = pointer
-                ? pointer[el]
-                : undefined;
-        }
-
-        return pointer;
+        return getIn(privateDataMap.get(this).currentData, this.path);
     }
 
     /*
@@ -168,6 +189,28 @@ class Cursor {
             return new Cursor(privateDataMap.get(this), this.path.concat(subPath));
         }
     }
+
+    /*
+     * Adds a new change listener to this cursor with the following signature:
+     *      function changeListener(nextRoot, prevRoot, pathUpdated)
+     *
+     * Where the parameters pass to this function have the following data types
+     *      nextRoot - Next generation of the JSON-style immutable data being managed by a cursor
+     *      prevRoot - Previous generation of the JSON-style immutable data being managed by a cursor
+     *      pathUpdated - Array of String indicating the keys used to navigate a nested/hierarchical
+     *                    structure to the point where the update occurred.
+     */
+    onChange(changeListener) {
+        changeListener.path = this.path;
+        privateDataMap.get(this).addListener(changeListener, this.path);
+    }
+
+    /*
+     * Removes change listener
+     */
+    removeListener(changeListener) {
+        privateDataMap.get(this).removeListener(changeListener);
+    }
 }
 
 /*
@@ -183,26 +226,5 @@ export default class RootCursor extends Cursor {
         // place where we invoke seamless-immutable because once we do this, our
         // interactions with these objects will only spawn other immutable objects
         super(new PrivateData(Immutable(initialRoot)), Immutable([]));
-    }
-
-    /*
-     * Adds a new change listener to this cursor with the following signature:
-     *      function changeListener(nextRoot, prevRoot, pathUpdated)
-     *
-     * Where the parameters pass to this function have the following data types
-     *      nextRoot - Next generation of the JSON-style immutable data being managed by a cursor
-     *      prevRoot - Previous generation of the JSON-style immutable data being managed by a cursor
-     *      pathUpdated - Array of String indicating the keys used to navigate a nested/hierarchical
-     *                    structure to the point where the update occurred.
-     */
-    onChange(changeListener) {
-        privateDataMap.get(this).addListener(changeListener);
-    }
-
-    /*
-     * Removes change listener
-     */
-    removeListener(changeListener) {
-        privateDataMap.get(this).removeListener(changeListener);
     }
 }
