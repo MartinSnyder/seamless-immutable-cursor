@@ -77,6 +77,13 @@ class PrivateData {
     addListener(changeListener) {
         this.changeListeners.push(changeListener);
     }
+
+    /*
+     * Removes change listener
+     */
+    removeListener(changeListener) {
+        this.changeListeners.splice(this.changeListeners.indexOf(changeListener), 1)
+    }
 }
 
 /*
@@ -190,5 +197,12 @@ export default class RootCursor extends Cursor {
      */
     onChange(changeListener) {
         privateDataMap.get(this).addListener(changeListener);
+    }
+
+    /*
+     * Removes change listener
+     */
+    removeListener(changeListener) {
+        privateDataMap.get(this).removeListener(changeListener);
     }
 }
