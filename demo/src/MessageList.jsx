@@ -35,8 +35,4 @@ const MessageList = ({messages}) => {
     return <div>{messageMarkup}</div>;
 };
 
-MessageList.propTypes = {
-    messages: React.PropTypes.array.isRequired
-};
-
 export default MessageList;

@@ -28,8 +28,4 @@ const DataRenderer = ({data}) => {
     return <div>{JSON.stringify(data)}</div>;
 };
 
-DataRenderer.propTypes = {
-    data: React.PropTypes.array.isRequired
-};
-
 export default DataRenderer;
