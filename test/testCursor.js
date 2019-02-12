@@ -57,13 +57,15 @@ describe('Cursors', () => {
     });
 
     let changes = [];
-    nested.onChange((nextRoot, prevRoot, pathUpdated) =>
+    const changeHandler = (nextRoot, prevRoot, pathUpdated) => {
         changes.push({
             prevRoot: prevRoot,
             nextRoot: nextRoot,
             pathUpdated: pathUpdated
-        })
-    );
+        });
+    }
+
+    nested.onChange(changeHandler);
 
     it('Descends structures correctly', () => assert.equal('nestedValue', nested.refine(['top', 'middle', 'bottom']).data));
     it('Safely returns if the path does not exist', () => assert.equal(undefined, nested.refine(['one', 'two', 'three']).data));
@@ -93,5 +95,32 @@ describe('Cursors', () => {
         assert.equal(undefined, changes[1].prevRoot.one);
         assert.equal('added', changes[1].nextRoot.one.two.three);
         assert.deepEqual(['one', 'two', 'three'], changes[1].pathUpdated);
+    });
+    it('removes change listeners correctly', () => {
+        nested.removeListener(changeHandler);
+
+        const cursor = nested.refine(['top', 'middle', 'bottom']);
+        cursor.data = 'second update';
+
+        // Verify change does not happen
+        assert.equal(2, changes.length);
+    });
+    it('Handles listeners on subcursors correctly', () => {
+        const cursor1 = nested.refine(['top', 'middle', 'bottom']);
+        const cursor2 = nested.refine(['one', 'two', 'three']);
+
+        cursor1.onChange(changeHandler);
+        cursor1.data = "third update";
+        cursor2.data = "updated";
+
+        // Verify cursor1 called changeHandler...
+        assert.equal(3, changes.length);
+        assert.equal('second update', changes[2].prevRoot.top.middle.bottom);
+        assert.equal('third update', changes[2].nextRoot.top.middle.bottom);
+        assert.deepEqual(['top', 'middle', 'bottom'], changes[2].pathUpdated);
+
+        // ... but cursor2 did not
+        assert.equal(3, changes.length);
+
     })
 });
