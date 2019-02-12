@@ -9,12 +9,14 @@ module.exports = {
         filename:   'bundle.js'
     },
     module: {
-        loaders: [{
-            test: /.js$/,
-            loader: 'babel',
+        rules: [{
+            test: /\.m?js$/,
             exclude: /node_modules/,
-            query: {
-                presets: 'es2015'
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['babel-preset-env']
+                }
             }
         }]
     }
