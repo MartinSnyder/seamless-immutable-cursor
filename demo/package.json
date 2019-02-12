@@ -1,6 +1,6 @@
 {
   "name": "seamless-immutable-cursor-demo",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "description": "Cursor Library add-on for seamless-immutable Demo",
   "main": "src/index.js",
   "author": "Martin Snyder",
