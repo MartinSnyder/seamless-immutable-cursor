@@ -3,7 +3,7 @@ Compact Cursor Library built on top of the excellent [seamless-immutable][seamle
 Cursors can be used to manage transitions and manipulations of immutable structures in an application.
 
 ## Presentation
-A [20 minute presentation](https://youtu.be/wQy5vxzNdV0) explains the utility of this library and the repository contents. [Slides can be viewed here](https://rawgit.com/MartinSnyder/seamless-immutable-cursor/master/presentation/index.html)
+A [20 minute presentation](https://youtu.be/wQy5vxzNdV0) explains the utility of this library and the repository contents. [Slides can be viewed here](https://martinsnyder.net/asset/revealjs/seamless-immutable-cursor.html)
 
 # Example
 ```javascript
